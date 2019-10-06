@@ -20,5 +20,10 @@ public class mutilModuleWebApp
     {
         //System.out.println( "Hello World!" );
     	SpringApplication.run(mutilModuleWebApp.class, args);
+    	
+       System.out.println("===================================================");
+       System.out.println("==================职道 http://127.0.0.1:8086 Demo runing......=================================");
+       System.out.println("===================================================");
+    	
     }
 }
