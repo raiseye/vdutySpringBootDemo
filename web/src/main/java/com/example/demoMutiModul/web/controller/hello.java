@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demoMutiModul.annotation.*;
 import com.example.demoMutiModul.common.Concat;
 import com.example.demoMutiModul.config.ConfigNormals;
-import com.example.demoMutiModul.service.StringDeal;
+import com.example.demoMutiModul.serviceImpl.StringDeal;
 import com.example.demoMutiModul.utils.SpringUtil;
 
 @RestController

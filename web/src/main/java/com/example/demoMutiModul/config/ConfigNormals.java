@@ -1,6 +1,14 @@
 package com.example.demoMutiModul.config;
 
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.omg.CORBA.Current;
+
+import com.example.demoMutiModul.domain.TaskInfo;
+
 public class ConfigNormals {
+	
+	public static ConcurrentHashMap<String,TaskInfo> currentTasks  = new ConcurrentHashMap<String,TaskInfo>();
 
 	private String siteName = "vduty.com";
 

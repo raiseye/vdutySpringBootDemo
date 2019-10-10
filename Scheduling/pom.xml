@@ -7,13 +7,10 @@
     <artifactId>demoMultiModul</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  
-  
-  
   <groupId>com.example.demoMutiModul</groupId>
-  <artifactId>web</artifactId>
+  <artifactId>Scheduling</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>web</name>
+  <name>Scheduling</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,21 +21,6 @@
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-    	<groupId>com.example.demoMutiModul</groupId>
-    	<artifactId>common</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-    </dependency>
-     <dependency>
-    	<groupId>com.example.demoMutiModul</groupId>
-    	<artifactId>Scheduling</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <!-- AOP依赖模块 -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-aop</artifactId>
     </dependency>
   </dependencies>
 </project>

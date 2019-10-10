@@ -7,7 +7,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * Hello world!
+ * s
  *
  */
 @ComponentScan(basePackageClasses = {mutilModuleWebApp.class})
@@ -18,12 +18,7 @@ public class mutilModuleWebApp
 {
     public static void main( String[] args )
     {
-        //System.out.println( "Hello World!" );
+        
     	SpringApplication.run(mutilModuleWebApp.class, args);
-    	
-       System.out.println("===================================================");
-       System.out.println("==================职道 http://127.0.0.1:8086 Demo runing......=================================");
-       System.out.println("===================================================");
-    	
     }
 }
