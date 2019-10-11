@@ -5,6 +5,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demoMutiModul.config.Globals;
 import com.example.demoMutiModul.domain.TaskInfo;
 import com.example.demoMutiModul.serviceImpl.ThreadHello;
+import com.vduty.utils.WebUtils;
 
 @RestController
 @RequestMapping(value = "/index", method = RequestMethod.GET)
 public class index {
-
+    
+	@Autowired
+    WebUtils webUtils;
+	
+	@Autowired
+	private HttpServletRequest request;
 	private int count = 0;
 	@Autowired
 	private ThreadHello helloThread;
@@ -92,8 +100,8 @@ public class index {
 				   LoggerFactory.getLogger(index.class).info("已经排入" + threadName);
 				   /*
 				   //if future.isDone() .......
-				   while (true) { ///这里使用了循环判断，等待获取结果信息
-					      if (future.isDone()) { //判断是否执行完毕
+				   while (true) { 
+					      if (future.isDone()) { 
 					        System.out.println("Result from asynchronous process - " + future.get());
 					        break;
 					      }
@@ -109,27 +117,31 @@ public class index {
 	@RequestMapping(value = "/viewthread", method = RequestMethod.GET)	 
 	public String viewThread() {
 	    StringBuilder sb = new StringBuilder();
-	    sb.append(""+Globals.taskMap.size() + "<br/>");
+	    int taskLen =Globals.taskMap.size();
+	    String strCount = ""+taskLen + "<br/>";
+	    sb.append(strCount);
 	    int count=0;
+	    int redCount = 0;
 	    for(TaskInfo t : Globals.taskMap.values()) {
 	    	count++;
 	    	String color="yellow";
 	    	if (!t.isPackageSuccess()) {
 	    		color = "red";
+	    		redCount ++;
 	    	}
 	    	sb.append("<span style='background-color:"+ color+";margin-top:3px;'>"+t.getName() + "-" + t.isPackageSuccess() + " </span>&nbsp;&nbsp;&nbsp;");
 	    	if (count % 5 ==0) {
 	    		sb.append("<br/>");
 	    	}
 	    	
-	    }	
-	    sb.append("<script>");
-	    sb.append("var interval = setInterval(()=>{location.href='http://127.0.0.1:8086/index/viewthread'},1000)");
+	    }
+	    String trueCount  = "true:" + (count - redCount);
+	    sb.insert(strCount.length() , trueCount);	    
+	    sb.insert((strCount+trueCount).length()," , false:" + redCount+"<br/>");
+	    
+	    sb.append("<script>");	    
+	    sb.append("var interval = setInterval(()=>{location.href='"+ webUtils.getCurrentHost(request)+"index/viewthread'},1000)");
 	    sb.append("</script>");
-		return sb.toString();
-		
+		return sb.toString();		
 	}
-	
-	
-
 }

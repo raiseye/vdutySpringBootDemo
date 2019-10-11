@@ -1,9 +1,6 @@
 package com.example.demoMutiModul.serviceImpl;
 
-import java.util.Date;
-
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
@@ -12,10 +9,6 @@ import com.example.demoMutiModul.config.Globals;
 import com.example.demoMutiModul.domain.TaskInfo;
 @Component
 public class ThreadHello {
-
-	
-	
-	
 	@Async
 	public ListenableFuture<String> sayHello(String name) {
 	    String res = name ;
@@ -23,11 +16,12 @@ public class ThreadHello {
 	    try {
 	    	TaskInfo taskInfo = new TaskInfo(name);    	
 	    	Globals.taskMap.put(name, taskInfo);
-	    	long start = System.currentTimeMillis();
+	    	long start = System.currentTimeMillis();//ms毫秒
 	    	double result=0;
-			for(long i=0;i<100000000;i++) {
+			
+	    	for(long i=0;i<100000000;i++) {
 				result += 103944940303.777*i;
-			}	
+			}
 			
 			long end =  System.currentTimeMillis(); 
 			long use  = end - start;
