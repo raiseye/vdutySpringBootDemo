@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -8,12 +7,12 @@
 		<version>2.1.7.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>com.vduty.example</groupId>
 	<artifactId>demoMultiModul</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>demoMultiModul</name>
 	<packaging>pom</packaging>
-	<description>Demo project for Spring Boot</description>
+	<description>职道 Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -57,7 +56,14 @@
 		</dependency>
 	</dependencies>
 
-	<!--指定使用maven打包-->
+	
+	<modules>
+		<module>web</module>
+		<module>common</module>
+		<module>Scheduling</module>
+        <module>Utils</module>
+  </modules>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -73,14 +79,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<skipTests>true</skipTests>    <!--默认关掉单元测试 -->
+					<skipTests>true</skipTests>   
 				</configuration>
 			</plugin>
 		</plugins>
 		</build>
-	<modules>
-		<module>web</module>
-		<module>common</module>
-		<module>Scheduling</module>
-	</modules>
 </project>
