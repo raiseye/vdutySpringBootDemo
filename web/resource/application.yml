@@ -20,6 +20,8 @@
 server:
   port: 8086
   servlet:    context-path: /
+  tomcat:
+    max-threads: 10000
 
 spring:
     datasource:

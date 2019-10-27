@@ -1,10 +1,7 @@
 package com.vduty.example.demoMutiModul.web.controller;
 
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.LoggerFactory;
@@ -16,21 +13,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vduty.example.demoMutiModul.config.Globals;
 import com.vduty.example.demoMutiModul.domain.TaskInfo;
-import com.vduty.example.demoMutiModul.serviceImpl.ThreadHello;
+import com.vduty.example.demoMutiModul.serviceImpl.ThreadAtomic;
+import com.vduty.example.demoMutiModul.serviceImpl.AsyncTaskService;
 import com.vduty.utils.WebUtils;
 
 @RestController
 @RequestMapping(value = "/index", method = RequestMethod.GET)
 public class index {
-    
-	@Autowired
-    WebUtils webUtils;
 	
+
+	@Autowired
+	WebUtils webUtils;
+
 	@Autowired
 	private HttpServletRequest request;
 	private int count = 0;
 	@Autowired
-	private ThreadHello helloThread;
+	private AsyncTaskService helloThread;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String index() {
@@ -68,80 +67,108 @@ public class index {
 		return sb.toString();
 	}
 
-	@RequestMapping(value = "/threadhello/{id}", method = RequestMethod.GET) 
-	public String helloThread(@PathVariable("id") int id) {		
+	@RequestMapping(value = "/threadhello/{id}", method = RequestMethod.GET)
+	public String helloThread(@PathVariable("id") int id) {
 
 		// 限时调用
 		// helloThread.sayHello("yan").get(1, TimeUnit.SECONDS);
 		doTask(String.valueOf(id));
 		return String.valueOf(count);
 	}
-	
-	@RequestMapping(value = "/threadhello", method = RequestMethod.POST) 
+
+	@RequestMapping(value = "/threadhello", method = RequestMethod.POST)
 	public String helloThreadPost(int id) {
 		System.out.println("post ok..." + id);
 		count++;
-		doTask(String.valueOf(id)) ;		
-		return  String.valueOf(count);
+		doTask(String.valueOf(id));
+		return String.valueOf(count);
 	}
+
 	private void doTask(String id) {
 		// 阻塞调用
-				// helloThread.sayHello("yan" + count).get();
-				count++;
-				// 非阻塞调用
-				String threadName = "yan-" + id ;
-				if (Globals.taskMap.get(threadName)!=null && Globals.taskMap.get(threadName).isPackageSuccess()) {
-					TaskInfo _t = 	Globals.taskMap.get(threadName);
-					_t.setPackageSuccess(false);
-					Globals.taskMap.put(threadName, _t);
-				}
-				
-				   Future<String> future = helloThread.sayHello(threadName );
-				   LoggerFactory.getLogger(index.class).info("已经排入" + threadName);
-				   /*
-				   //if future.isDone() .......
-				   while (true) { 
-					      if (future.isDone()) { 
-					        System.out.println("Result from asynchronous process - " + future.get());
-					        break;
-					      }
-					      System.out.println("Continue doing something else. ");
-					      System.out.println("main end:" + LocalDateTime.now() +
-					          ",id:" + Thread.currentThread().getId());
-					 
-					    }
-					    */
-				
+		// helloThread.sayHello("yan" + count).get();
+		count++;
+		// 非阻塞调用
+		String threadName = "yan-" + id;
+		if (Globals.taskMap.get(threadName) != null && Globals.taskMap.get(threadName).isPackageSuccess()) {
+			TaskInfo _t = Globals.taskMap.get(threadName);
+			_t.setPackageSuccess(false);
+			Globals.taskMap.put(threadName, _t);
+		}
+
+		Future<String> future = helloThread.sayHello(threadName);
+		LoggerFactory.getLogger(index.class).info("已经排入" + threadName);
+		/*
+		 * //if future.isDone() ....... while (true) { if (future.isDone()) {
+		 * System.out.println("Result from asynchronous process - " + future.get());
+		 * break; } System.out.println("Continue doing something else. ");
+		 * System.out.println("main end:" + LocalDateTime.now() + ",id:" +
+		 * Thread.currentThread().getId());
+		 * 
+		 * }
+		 */
+
 	}
-	
-	@RequestMapping(value = "/viewthread", method = RequestMethod.GET)	 
+
+	@RequestMapping(value = "/viewthread", method = RequestMethod.GET)
 	public String viewThread() {
-	    StringBuilder sb = new StringBuilder();
-	    int taskLen =Globals.taskMap.size();
-	    String strCount = ""+taskLen + "<br/>";
-	    sb.append(strCount);
-	    int count=0;
-	    int redCount = 0;
-	    for(TaskInfo t : Globals.taskMap.values()) {
-	    	count++;
-	    	String color="yellow";
-	    	if (!t.isPackageSuccess()) {
-	    		color = "red";
-	    		redCount ++;
-	    	}
-	    	sb.append("<span style='background-color:"+ color+";margin-top:3px;'>"+t.getName() + "-" + t.isPackageSuccess() + " </span>&nbsp;&nbsp;&nbsp;");
-	    	if (count % 5 ==0) {
-	    		sb.append("<br/>");
-	    	}
-	    	
-	    }
-	    String trueCount  = "true:" + (count - redCount);
-	    sb.insert(strCount.length() , trueCount);	    
-	    sb.insert((strCount+trueCount).length()," , false:" + redCount+"<br/>");
-	    
-	    sb.append("<script>");	    
-	    sb.append("var interval = setInterval(()=>{location.href='"+ webUtils.getCurrentHost(request)+"index/viewthread'},1000)");
-	    sb.append("</script>");
-		return sb.toString();		
+		StringBuilder sb = new StringBuilder();
+		int taskLen = Globals.taskMap.size();
+		String strCount = "" + taskLen + "<br/>";
+		sb.append(strCount);
+		int count = 0;
+		int redCount = 0;
+		for (TaskInfo t : Globals.taskMap.values()) {
+			count++;
+			String color = "yellow";
+			if (!t.isPackageSuccess()) {
+				color = "red";
+				redCount++;
+			}
+			sb.append("<span style='background-color:" + color + ";margin-top:3px;'>" + t.getName() + "-"
+					+ t.isPackageSuccess() + " </span>&nbsp;&nbsp;&nbsp;");
+			if (count % 5 == 0) {
+				sb.append("<br/>");
+			}
+
+		}
+		String trueCount = "true:" + (count - redCount);
+		sb.insert(strCount.length(), trueCount);
+		sb.insert((strCount + trueCount).length(), " , false:" + redCount + "<br/>");
+
+		sb.append("<script>");
+		sb.append("var interval = setInterval(()=>{location.href='" + webUtils.getCurrentHost(request)
+				+ "index/viewthread'},1000)");
+		sb.append("</script>");
+		return sb.toString();
 	}
+
+	@RequestMapping("/atomictest")
+	public String atomicTest() {
+		long start = System.currentTimeMillis();
+		Thread[] threads = new Thread[100];
+		for (int i = 0; i < 100; i++) {
+			threads[i] = new ThreadAtomic();
+			threads[i].start();
+			try {
+				threads[i].join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		String ru = ThreadAtomic.atomicInt.toString();
+		int val = ThreadAtomic.val;
+		ThreadAtomic.atomicInt = new AtomicInteger(0);
+		ThreadAtomic.val = 0;
+		long end = System.currentTimeMillis();
+		long used = end - start;
+		return "atomicInt result:" + ru + " val:" + val + " used time:" + used;
+	}
+
+	
+
+	
+
 }
