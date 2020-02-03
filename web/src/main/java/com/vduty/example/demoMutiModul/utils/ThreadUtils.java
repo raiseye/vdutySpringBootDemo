@@ -1,6 +1,14 @@
 package com.vduty.example.demoMutiModul.utils;
-
+/**
+ * 线程方法类
+ * @author 职道 yeluxing
+ *
+ */
 public class ThreadUtils {
+	/**
+	 * 获取线程数量
+	 * @return
+	 */
 	public static int getThreadNum() {
 		ThreadGroup group = Thread.currentThread().getThreadGroup();
 		int curestimatedSize = group.activeCount()*2;

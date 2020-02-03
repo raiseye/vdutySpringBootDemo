@@ -12,7 +12,7 @@ import com.vduty.example.demoMutiModul.annotation.AnalysisActuator;
 /**
  * AOP example
  * define a aspect
- * @author lx.ye
+ * @author 职道 lx.ye
  *
  */
 @Aspect

@@ -10,7 +10,11 @@ import org.springframework.util.concurrent.ListenableFuture;
 
 import com.vduty.example.demoMutiModul.domain.TaskInfo;
 import com.vduty.utils.WebUtils;
-
+/**
+ * 全局参数
+ * @author yeluxing
+ *
+ */
 @Component
 public class Globals {
 

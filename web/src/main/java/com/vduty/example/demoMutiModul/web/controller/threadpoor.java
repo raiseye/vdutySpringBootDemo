@@ -1,6 +1,5 @@
 package com.vduty.example.demoMutiModul.web.controller;
 
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,17 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vduty.example.demoMutiModul.config.Globals;
 import com.vduty.example.demoMutiModul.serviceImpl.AsyncTaskService;
 import com.vduty.example.demoMutiModul.serviceImpl.ExcuteorServiceImpl;
-import com.vduty.example.demoMutiModul.utils.ThreadUtils;
 import com.vduty.utils.WebUtils;
 
 /**
+ * 线程池测试页面
+ * 
  * 要实现：1、ThreadPoorExecutor的单例模式；
  * 2、阻塞调用：任务阻塞模式的使用场景不大，它几乎等于顺序执行，这样多线程还有什么意义？在需要结果关联的场景下适合。
  * 可用不用在调用时不使用future的get产生阻塞，而是启用另一个线程监听future的执行情况，如while(future.isdone){...}来获取结果。
  * 也可以在task任务体里在运算的最后把结果存入到体格hashmap里或者数据库里。
  * 3、测试原子操作atomicinteger
  * 4、测试线程池的优化配置
- * @author yeluxing
+ * 
+ * 本想和future配合开发例子，但实在没有想象出真正的使用用场景。
+ * 如果a线程的执行需要b线程的结果，那他们在同一个线程排队执行就好了？！若采用future.get() 的方法会阻塞线程，那还要创建线程干嘛?
+ * 如果需要监听future.done()再取结果，那不同这种方法，自线程计算结果放在全局变量（可以是缓存、数据库）里，要用取这个变量值就好了？
+ * @author 职道 yeluxing
  *
  */
 

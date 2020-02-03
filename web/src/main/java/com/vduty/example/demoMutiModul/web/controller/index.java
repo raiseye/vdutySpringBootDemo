@@ -143,6 +143,10 @@ public class index {
 		return sb.toString();
 	}
 
+	/**
+	 * 原子操作测试
+	 * @return
+	 */
 	@RequestMapping("/atomictest")
 	public String atomicTest() {
 		long start = System.currentTimeMillis();
@@ -151,7 +155,7 @@ public class index {
 			threads[i] = new ThreadAtomic();
 			threads[i].start();
 			try {
-				threads[i].join();
+				threads[i].join();//这个要注意了！！！阻塞了？？？？？？
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -18,7 +18,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableAsync
 public class ExecutorBeanConfig {
 
-    @Bean("BaseExecutor")
+    @Bean("BaseExecutor")//指定名称，以备调用者指定
     public TaskExecutor BaseExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         

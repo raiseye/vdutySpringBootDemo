@@ -16,7 +16,7 @@ import com.vduty.example.demoMutiModul.domain.TaskInfo;
 import com.vduty.example.demoMutiModul.web.controller.index;
 @Component
 public class AsyncTaskService {	
-	@Async("BaseExecutor")	
+	@Async("BaseExecutor")//指定TaskExecutor	
 	public ListenableFuture<String> sayHello(String name) {
 	    String res = name ;
 	    long use =0;
@@ -26,7 +26,9 @@ public class AsyncTaskService {
 	    	
 	    	long start = System.currentTimeMillis();//ms毫秒
 	    	double result=0;
-			
+			/**
+			 * 模拟复杂的计算
+			 */
 	    	for(long i=0;i<100000000;i++) {
 				result += 103944940303.777*i;
 			}
@@ -89,7 +91,7 @@ public class AsyncTaskService {
 		Globals.threadCountForAsync.getAndIncrement();
 		// 非阻塞调用
 		String taskName  = "async-" + id;				
-		Future<String> future = asyncTaskService.sayHello(taskName);
+		Future<String> future = asyncTaskService.sayHello(taskName);//如果future.get就能获取结果，阻塞线程
 		LoggerFactory.getLogger(AsyncTaskService.class).info("已经排入" + taskName);
 		
 		if (isBlockRun) {
